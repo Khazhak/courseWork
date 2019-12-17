@@ -6,13 +6,9 @@ import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from PIL import Image
 import random
 import PIL, PIL.ImageOps, PIL.ImageEnhance, PIL.ImageDraw
-
-def imgToTensor(img):
-    transforms.ToTensor()
-    return img
+from PIL import Image
 
 def tensorToImg(tens):
     tens = tens / 2 + 0.5
@@ -23,7 +19,6 @@ def tensorToImg(tens):
             lst.append((int(tens[0][i][j].item() * 256), int(tens[1][i][j].item() * 256), int(tens[2][i][j].item() * 256)))
     img.putdata(lst)
     return img
-
 
 ########### Augmentations
 def ShearX(img, v):  # [-0.3, 0.3]
@@ -125,7 +120,7 @@ def Identity(img, v):
 
 ###########
 
-def augment_list():
+def augmentList():
     augList = [(Identity, 0., 1.0),
         (ShearX, 0., 0.3),
         (ShearY, 0., 0.3),
@@ -148,7 +143,7 @@ def applyAugment(func, img, v):
     return newImg
 
 def applyRandomAugment(img, v):
-    ra = random.choice(augment_list())
+    ra = random.choice(augmentList())
     intensity = ra[1] + v * (ra[2] - ra[1]) / 100.
     return applyAugment(ra[0], img, intensity)
 
